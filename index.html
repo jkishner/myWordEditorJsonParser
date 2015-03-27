@@ -1,0 +1,76 @@
+<html>
+<body>
+
+<script>
+function convert(form) {
+
+
+
+var xmlhttp = new XMLHttpRequest();
+var url = form.url.value;
+var num = form.num.value;
+num = Number(num);
+
+if (isNaN(num)) {alert("this is not a number");}
+num = num - 1;
+xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+var myWord = xmlhttp.responseText;
+
+
+
+
+
+
+var myArray = JSON.parse(myWord); 
+
+
+
+if (num >= myArray.length) { alert("that post does not exist"); document.getElementById("results").innerHTML=""; document.getElementById("title").innerHTML="";} else {
+
+if (myArray[num].publishedUrl == "") { alert("that is not published"); document.getElementById("results").innerHTML=""; document.getElementById("title").innerHTML="";} else {
+
+
+var howmany = num + 1;
+alert("this is post " + howmany + " of a total of " + myArray.length);
+var title = myArray[num].title;
+var content = myArray[num].subs;
+
+
+
+document.getElementById("title").innerHTML=title;
+
+
+var output="";
+
+
+for (i=0;i<content.length;i++) {
+	output+=content[i] + "<BR><BR>";
+	} // end loop
+
+
+document.getElementById("results").innerHTML=output;
+} // end is publishedUrl
+} // end does this exist
+	} // end xmlhttp
+} // end onreadystatechange
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+} // end function
+</script>
+<p>Enter the url of your myWordEditor json backup.</p>
+<p>Here is an example: <code>http://myword.io/users/davewiner/files.json</code></p>
+<form>
+url <input name="url" size="100">
+essay # <input name="num" size="5">
+<input type="button" value="convert" onClick="convert(this.form)">
+</form>
+
+<p id="title" style="font-weight:bold;"></p>
+<p id="results"></p>
+
+</body>
+</html>
+
+
